@@ -6,6 +6,8 @@ const path = require("path");
 const fs = require("fs");
 const XYML = require("../src/index");
 
+if (typeof process.argv[2] !== "string") throw new Error("expected input file path for argument 2")
+
 // Parse flags
 let lastFlag = null;
 let flags = {};
