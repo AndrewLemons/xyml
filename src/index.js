@@ -48,8 +48,10 @@ class XYML {
 				})
 				// Convert the line data into an easier to work with format
 				.map((data) => {
-					let value = undefined
-					try { value = JSON.parse(data.value) } catch {}
+					let value = undefined;
+					try {
+						value = JSON.parse(data.value);
+					} catch {}
 
 					return {
 						indent: data.indent.length,
@@ -57,7 +59,7 @@ class XYML {
 						name: data.name,
 						value,
 						children: [],
-					}
+					};
 				})
 		);
 	}
