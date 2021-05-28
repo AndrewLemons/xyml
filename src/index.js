@@ -18,7 +18,8 @@ class XYML {
 	parse(src) {
 		let lines = this.#getLines(src);
 		let tree = this.#createTree(lines);
-		return this.#createObject(tree);
+		let obj = this.#createObject(tree);
+		return this.#compressObject(obj);
 	}
 
 	/**
@@ -96,25 +97,26 @@ class XYML {
 		return tree;
 	}
 
-	#createObject(from) {
+	/**
+	 * Create an object from a tree.
+	 * @param {object} tree - Tree to create the object from.
+	 * @returns {object} The created object.
+	 */
+	#createObject(tree) {
 		let result = {};
 
-		if (from.value !== undefined) {
-			if (from.children.length === 0 && this.options.summarizeValues) {
-				result = from.value;
-			} else {
-				result[this.options.valueKey] = from.value;
+		if (tree.value !== undefined) {
+			result[this.options.valueKey] = tree.value;
 
-				from.children.forEach((child) => {
-					if (child.isAttr) {
-						result[this.options.preAttr + child.name] = child.value ?? true;
-					}
+			tree.children.forEach((child) => {
+				if (child.isAttr) {
+					result[this.options.preAttr + child.name] = child.value ?? true;
+				}
 
-					if (child.name === "") result[this.options.valueKey] = child.value;
-				});
-			}
+				if (child.name === "") result[this.options.valueKey] = child.value;
+			});
 		} else {
-			from.children.forEach((child) => {
+			tree.children.forEach((child) => {
 				if (child.isAttr) {
 					result[this.options.preAttr + child.name] = child.value ?? true;
 				} else {
@@ -127,10 +129,55 @@ class XYML {
 		return result;
 	}
 
+	/**
+	 * Compress an object.
+	 * @param {object} target - Target object to compress.
+	 * @returns {object} Compressed object.
+	 */
+	#compressObject(target) {
+		// Compress children
+		if (this.options.compressValues && this.options.compressArrays) {
+			Object.keys(target).forEach(key => {
+				if (Array.isArray(target[key])) {
+					// Compress the child object
+					target[key] = target[key].map(value => this.#compressObject(value))
+				}
+			});
+		} else {
+			return target; // Do not compress anything to save time
+		}
+
+		// Compress values
+		if (this.options.compressValues) {
+			let keys = Object.keys(target);
+
+			// Ensure that the value is the only key
+			if (keys.length === 1 && keys.includes(this.options.valueKey)) {
+				// Set the target to that only key
+				target = target[this.options.valueKey];
+			}
+		}
+
+		// Compress arrays
+		if (this.options.compressArrays) {
+			if (typeof target === "object") {
+				Object.keys(target).forEach((key) => {
+					// Ensure the key is still any array
+					if (!Array.isArray(target[key])) return
+					// If the array is one element long, compress it
+					if (target[key].length === 1) target[key] = target[key][0];
+				});
+			}
+		}
+
+		return target;
+	}
+
 	static defaults = {
 		valueKey: "#", // Key to use for values
 		preAttr: "$", // String to prepend to attribute keys
-		summarizeValues: true, // Summarize value only tags to their value
+		compressValues: true, // Compress value only tags to their value
+		compressArrays: false, // Compress single item arrays to their single item
 	};
 }
 
