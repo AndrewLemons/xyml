@@ -1,0 +1,19 @@
+{
+	"name": "xyml",
+	"version": "0.1.0",
+	"description": "A simple YAML/XML combination markup language.",
+	"main": "src/index.js",
+	"bin": "bin/xyml.js",
+	"scripts": {
+		"format": "prettier -w ."
+	},
+	"keywords": [
+		"xml",
+		"yaml",
+		"markup"
+	],
+	"license": "GPL-3.0-or-later",
+	"devDependencies": {
+		"prettier": "^2.3.0"
+	}
+}

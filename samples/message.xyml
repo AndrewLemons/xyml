@@ -1,0 +1,7 @@
+message:
+	+ sent: "2021-01-01"
+	subject: "My Message"
+	body: "Hello! How are you?"
+		+ font: "Times New Roman"
+	to: "Bill Gates"
+	to: "Elon Musk"

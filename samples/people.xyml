@@ -1,0 +1,15 @@
+person:
+	id: 1
+	firstName: "John"
+	lastName: "Doe"
+	accounts:
+		email: "johndoe@example.com"
+	+ created: "2020-05-28"
+person:
+	id: 0
+	firstName: "Jane"
+	lastName: "Toe"
+	accounts:
+		email: "janetoe@example.com"
+			+ active: "false"
+	+ created: "2021-05-27"
