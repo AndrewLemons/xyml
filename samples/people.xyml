@@ -11,5 +11,5 @@ person:
 	lastName: "Toe"
 	accounts:
 		email: "janetoe@example.com"
-			+ active: "false"
+			+ active: false
 	+ created: "2021-05-27"
