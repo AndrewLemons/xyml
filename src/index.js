@@ -137,10 +137,10 @@ class XYML {
 	#compressObject(target) {
 		// Compress children
 		if (this.options.compressValues && this.options.compressArrays) {
-			Object.keys(target).forEach(key => {
+			Object.keys(target).forEach((key) => {
 				if (Array.isArray(target[key])) {
 					// Compress the child object
-					target[key] = target[key].map(value => this.#compressObject(value))
+					target[key] = target[key].map((value) => this.#compressObject(value));
 				}
 			});
 		} else {
@@ -163,7 +163,7 @@ class XYML {
 			if (typeof target === "object") {
 				Object.keys(target).forEach((key) => {
 					// Ensure the key is still any array
-					if (!Array.isArray(target[key])) return
+					if (!Array.isArray(target[key])) return;
 					// If the array is one element long, compress it
 					if (target[key].length === 1) target[key] = target[key][0];
 				});
