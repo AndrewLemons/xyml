@@ -2,6 +2,7 @@
 
 XYML is a simple markup language based off of XML and YAML. It features the simplicity of YAML with the extensibility of XML.
 
+To learn more about XYML, [visit the wiki](https://github.com/AndrewLemons/xyml/wiki).
 ## Notes
 
 For the most part, XYML is most closely related to YAML. The few major differences that need to be noted are:
